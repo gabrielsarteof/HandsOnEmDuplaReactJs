@@ -26,10 +26,10 @@ const productService = {
    */
   async getProductsByPage(page = 1, limit = 12) {
     const from = (page - 1) * limit;
-    const to   = from + limit - 1;
+    const to = from + limit - 1;
     const { data, error, count } = await supabase
       .from('products')
-      .select('*', { count: 'exact' })
+      .select('*, category:category_id(name)', { count: 'exact' })
       .range(from, to)
       .order('title', { ascending: true });
     if (error) throw error;
