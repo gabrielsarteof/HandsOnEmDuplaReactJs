@@ -14,7 +14,7 @@ const AdminProductsPage = () => {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
 
-    // Lista de produtos
+    // Consulta de produtos com paginação e relação de categoria
     const {
         data,
         isLoading: loadingProducts,
@@ -24,16 +24,15 @@ const AdminProductsPage = () => {
         queryKey: ['products', currentPage],
         queryFn: () => productService.getProductsByPage(currentPage, PRODUCTS_PER_PAGE),
         keepPreviousData: true,
-    });    
+    });
 
-    // Manipulador para mudança de página
+    // Navegação de página
     const handlePageChange = (newPage) => {
         setCurrentPage(newPage);
-        // Rolar para o topo da página
         window.scrollTo(0, 0);
     };
 
-    // Mutação para excluir produto
+    // Mutação para exclusão de produto
     const deleteMutation = useMutation({
         mutationFn: productService.deleteProduct,
         onSuccess: () => {
@@ -43,14 +42,12 @@ const AdminProductsPage = () => {
         onError: (err) => toast.error(`Erro: ${err.message}`, { icon: '❌' }),
     });
 
-    // Função para excluir produto
     const handleDelete = (id) => {
         if (window.confirm('Excluir produto? Esta ação é irreversível.')) {
             deleteMutation.mutate(id);
         }
     };
 
-    // Função para editar produto
     const handleEdit = (product) => {
         navigate(`/admin/products/edit/${product.id}`, { state: { product } });
     };
@@ -71,7 +68,8 @@ const AdminProductsPage = () => {
                         <h2 className="mb-0">Produtos</h2>
                         <button
                             className="btn btn-success"
-                            onClick={() => navigate('/admin/products/new')}>
+                            onClick={() => navigate('/admin/products/new')}
+                        >
                             Adicionar Produto
                         </button>
                     </div>
@@ -88,37 +86,42 @@ const AdminProductsPage = () => {
                                             <th className="one-line-cell">Foto</th>
                                             <th>Nome</th>
                                             <th>Preço</th>
+                                            <th>Categoria</th>
                                             <th className="text-center">Ações</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {data?.products?.length === 0 && (
                                             <tr>
-                                                <td colSpan={4} className="text-center py-4">
+                                                <td colSpan={5} className="text-center py-4">
                                                     Nenhum produto encontrado.
                                                 </td>
                                             </tr>
                                         )}
-                                        {data?.products && data.products.map((product) => (
+                                        {data?.products?.map((product) => (
                                             <tr key={product.id}>
                                                 <td className="one-line-cell px-3">
                                                     <img
                                                         src={product.image_url}
                                                         alt={product.title}
                                                         className="rounded"
-                                                        style={{ width: 'auto', height: '60px', }} />
+                                                        style={{ width: 'auto', height: '60px' }}
+                                                    />
                                                 </td>
                                                 <td>{product.title}</td>
                                                 <td className="one-line-cell">{formatPrice(product.price)}</td>
+                                                <td>{product.category?.name || '—'}</td>
                                                 <td className="text-center one-line-cell px-3">
                                                     <button
                                                         className="btn btn-sm btn-outline-warning me-2"
-                                                        onClick={() => handleEdit(product)}>
+                                                        onClick={() => handleEdit(product)}
+                                                    >
                                                         Alterar
                                                     </button>
                                                     <button
                                                         className="btn btn-sm btn-outline-danger"
-                                                        onClick={() => handleDelete(product.id)}>
+                                                        onClick={() => handleDelete(product.id)}
+                                                    >
                                                         Excluir
                                                     </button>
                                                 </td>
@@ -136,11 +139,12 @@ const AdminProductsPage = () => {
                     <div className="d-flex justify-content-center mb-2">
                         <Pagination
                             currentPage={currentPage}
-                            totalPages={data?.totalPages}
-                            onPageChange={handlePageChange} />
+                            totalPages={data.totalPages}
+                            onPageChange={handlePageChange}
+                        />
                     </div>
                     <p className="small text-center m-0">
-                        Mostrando página {currentPage} de {data?.totalPages}
+                        Mostrando página {currentPage} de {data.totalPages}
                     </p>
                 </>
             )}
