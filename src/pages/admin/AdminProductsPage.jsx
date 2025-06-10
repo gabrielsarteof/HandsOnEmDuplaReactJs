@@ -105,7 +105,12 @@ const AdminProductsPage = () => {
                                                         src={product.image_url}
                                                         alt={product.title}
                                                         className="rounded"
-                                                        style={{ width: 'auto', height: '60px' }}
+                                                        style={{ width: 'auto', height: '60px'  }}
+                                                        onError={(e) => {
+                                                            e.target.src = 'https://placehold.co/300x200?text=Imagem+Indisponível';
+                                                            //TODO: resolver para mostrar imagem local
+                                                            //e.target.src = require('@assets/img/NoImage300x200.svg').default;
+                                                        }}
                                                     />
                                                 </td>
                                                 <td>{product.title}</td>

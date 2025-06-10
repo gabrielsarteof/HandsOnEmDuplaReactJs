@@ -1,6 +1,6 @@
 import supabase from './supabase';
 
-const BUCKET = 'product-images';
+const BUCKET = 'product';
 
 /** 
  * Converte uma key de bucket ou URL externa em URL navegável.

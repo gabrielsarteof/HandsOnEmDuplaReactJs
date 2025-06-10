@@ -18,10 +18,12 @@ import UpdatePasswordPage from '@pages/auth/UpdatePasswordPage';
 import AdminProductsPage from '@pages/admin/AdminProductsPage';
 import AdminCategoriesPage from '@pages/admin/AdminCategoriesPage';
 import AdminCreateCategoryPage from '@pages/admin/AdminCreateCategoryPage';
+import AdminCarriersPage from './admin/AdminCarriersPage';
+import AdminCreateCarrierPage from './admin/AdminCreateCarrierPage';
 
 function App() {
   const [cartItemCount, setCartItemCount] = useState(0);
-  
+
   // Função para adicionar ao carrinho
   const handleAddToCart = (product) => {
     setCartItemCount(prevCount => prevCount + 1);
@@ -84,7 +86,7 @@ function App() {
                   <AdminCreateProductPage />
                 </AdminRoute>
               } />
-              <Route
+            <Route
               path="/admin/categories"
               element={
                 <AdminRoute>
@@ -105,11 +107,32 @@ function App() {
                   <AdminCreateCategoryPage />
                 </AdminRoute>
               } />
-            <Route            
+            <Route
               path="/admin/users"
               element={
                 <AdminRoute>
                   <AdminUsersPage />
+                </AdminRoute>
+              } />
+              <Route
+              path="/admin/carriers"
+              element={
+                <AdminRoute>
+                  <AdminCarriersPage />
+                </AdminRoute>
+              } />
+            <Route
+              path="/admin/carriers/new"
+              element={
+                <AdminRoute>
+                  <AdminCreateCarrierPage/>
+                </AdminRoute>
+              } />
+            <Route
+              path="/admin/carriers/edit/:id"
+              element={
+                <AdminRoute>
+                  <AdminCreateCarrierPage />
                 </AdminRoute>
               } />
           </Routes>
